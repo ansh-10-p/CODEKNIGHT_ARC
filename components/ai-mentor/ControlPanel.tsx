@@ -42,7 +42,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{isLoading ? "Processing..." : isCallActive ? "End call" : "Start call"}</p>
+              <p>{isLoading ? "Processing..." : isCallActive ? "End Arc AI call" : "Start Arc AI call"}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -69,7 +69,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Microphone {isCallActive ? "active" : "inactive"}</p>
+              <p>Microphone {isCallActive ? "active" : "inactive"} (Arc AI)</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
