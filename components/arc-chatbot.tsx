@@ -7,9 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { X, Send, Sparkles, Loader2 } from "lucide-react";
 
 interface Message { id: string; role: "user" | "ai"; content: string; source?: string; }
-interface FestoChatbotProps { userRole?: "student" | "teacher" | "canteen" | "admin"; timetable?: any; }
+interface ArcChatbotProps { userRole?: "student" | "teacher" | "canteen" | "admin"; timetable?: any; }
 
-export function FestoChatbot({ userRole = "student", timetable }: FestoChatbotProps) {
+export function ArcChatbot({ userRole = "student", timetable }: ArcChatbotProps) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -37,8 +37,8 @@ export function FestoChatbot({ userRole = "student", timetable }: FestoChatbotPr
     };
     const topics = roleGreetings[userRole] ?? roleGreetings.student;
     const greeting = userName
-      ? `Hi ${userName}! I'm FESTO AI. Ask me about ${topics}.`
-      : `Hi! I'm FESTO AI. Ask me about ${topics}.`;
+      ? `Hi ${userName}! I'm ARC AI. Ask me about ${topics}.`
+      : `Hi! I'm ARC AI. Ask me about ${topics}.`;
     setMessages([{ id: "0", role: "ai", content: greeting, source: "general" }]);
   }, [userName, userRole]);
 
@@ -60,7 +60,7 @@ export function FestoChatbot({ userRole = "student", timetable }: FestoChatbotPr
   return (
     <>
       {!open && (
-        <button onClick={() => setOpen(true)} className="fixed bottom-6 right-6 z-50 bg-[#e78a53] hover:bg-[#d4784a] text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-colors" aria-label="Open FESTO AI chat">
+        <button onClick={() => setOpen(true)} className="fixed bottom-6 right-6 z-50 bg-[#e78a53] hover:bg-[#d4784a] text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-colors" aria-label="Open ARC AI chat">
           <Sparkles className="h-6 w-6" />
         </button>
       )}

@@ -1,5 +1,5 @@
 /**
- * FESTO AI Service
+ * ARC AI Service
  * Provider chain: OpenRouter → offline fallback
  */
 
