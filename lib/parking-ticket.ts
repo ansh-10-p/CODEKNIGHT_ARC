@@ -203,7 +203,7 @@ export function printParkingTicket(ticket: ParkingTicketData) {
 
           <!-- Header -->
           <div class="header">
-            <span class="brand">A.R Campus Parking</span>
+            <span class="brand">Arc Campus Parking</span>
             <span class="ticket-id">${ticket.ticketId}</span>
           </div>
 

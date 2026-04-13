@@ -67,7 +67,7 @@ export function OrderReceipt({ isOpen, onClose, order }: OrderReceiptProps) {
   const handleDownloadReceipt = () => {
     // Create a simple text receipt
     const receiptText = `
-A.R CAMPUS FOOD - ORDER RECEIPT
+ARC CAMPUS FOOD - ORDER RECEIPT
 ================================
 
 Order ID: ${order.orderId}

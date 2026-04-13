@@ -51,7 +51,7 @@ export function fallbackResponse(type: string, data: any): any {
       return { reply: "Campus parking availability can be checked in the Parking section. Book a slot in advance to ensure a spot.", source: "general" };
     if (q.includes("internship") || q.includes("placement") || q.includes("job"))
       return { reply: "Visit the Internships section for the latest placement drives, internship listings, and application deadlines.", source: "general" };
-    return { reply: "I'm A.R.C AI, your campus assistant! I can help you with your timetable, attendance, canteen orders, events, parking, and more. What would you like to know?", source: "general" };
+    return { reply: "I'm ARC AI, your campus assistant! I can help you with your timetable, attendance, canteen orders, events, parking, and more. What would you like to know?", source: "general" };
   }
   return { reply: "I'm here to help! Ask me about your timetable, attendance, canteen, or events.", source: "general" };
 }

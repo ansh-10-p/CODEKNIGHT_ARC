@@ -34,7 +34,7 @@ export default function SignupPage() {
           className="text-center mb-16"
         >
           <h1 className="text-6xl font-bold text-white mb-6 bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
-            Join A.R Campus
+            Join Arc Campus
           </h1>
           <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
             Choose your role to get started with our comprehensive campus solution platform

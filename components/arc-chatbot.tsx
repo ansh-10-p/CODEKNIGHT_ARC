@@ -53,7 +53,7 @@ export function ArcChatbot({ userRole = "student", timetable }: ArcChatbotProps)
       const data = await res.json();
       setMessages((m) => [...m, { id: (Date.now()+1).toString(), role: "ai", content: data.reply ?? data.error, source: data.source }]);
     } catch {
-      setMessages((m) => [...m, { id: (Date.now()+1).toString(), role: "ai", content: "Sorry, A.R.C AI is unavailable right now." }]);
+      setMessages((m) => [...m, { id: (Date.now()+1).toString(), role: "ai", content: "Sorry, ARC AI is unavailable right now." }]);
     } finally { setLoading(false); }
   }
 
@@ -69,7 +69,7 @@ export function ArcChatbot({ userRole = "student", timetable }: ArcChatbotProps)
           <div className="flex items-center justify-between px-4 py-3 bg-zinc-800 border-b border-zinc-700">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-[#e78a53]" />
-              <span className="text-white font-semibold text-sm">A.R.C AI</span>
+              <span className="text-white font-semibold text-sm">ARC AI</span>
               <Badge variant="outline" className="text-[10px] border-green-500 text-green-400">Online</Badge>
             </div>
             <button onClick={() => setOpen(false)} className="text-zinc-400 hover:text-white"><X className="h-4 w-4" /></button>

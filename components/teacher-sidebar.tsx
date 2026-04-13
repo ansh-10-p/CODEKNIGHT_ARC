@@ -30,7 +30,7 @@ export function TeacherSidebar({ className = "" }: SidebarProps) {
         <aside className={`w-64 bg-zinc-900/50 backdrop-blur-sm border-r border-zinc-800 flex flex-col ${className}`}>
             <div className="p-6">
                 <Link href="/teacher/dashboard" className="text-[#e78a53] font-bold text-xl">
-                    A.R Campus
+                    Arc Campus
                 </Link>
                 <p className="text-zinc-400 text-sm mt-1">Teacher Portal</p>
             </div>

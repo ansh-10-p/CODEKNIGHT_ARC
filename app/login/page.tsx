@@ -74,7 +74,7 @@ export default function LoginPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <span className="text-[#e78a53] font-bold tracking-tight text-2xl">A.R Campus</span>
+            <span className="text-[#e78a53] font-bold tracking-tight text-2xl">Arc Campus</span>
           </Link>
           <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
           <p className="text-zinc-400">Sign in to your account to continue</p>

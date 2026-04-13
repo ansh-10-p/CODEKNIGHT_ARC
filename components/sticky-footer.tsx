@@ -109,7 +109,7 @@ export function StickyFooter() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              A.R Campus
+              Arc Campus
             </motion.h2>
           </div>
         </motion.div>

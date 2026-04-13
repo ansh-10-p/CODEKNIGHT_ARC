@@ -241,7 +241,7 @@ export function OrderDialog({
       key: DEMO_RAZORPAY_KEY_ID,
       amount: amountInPaisa,
       currency: "INR",
-      name: "A.R Campus Food",
+      name: "Arc Campus Food",
       description: `Order ${demoOrder.orderId}`,
       handler: (response: any) => {
         const paidOrder = {
