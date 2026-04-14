@@ -15,6 +15,12 @@ import {
   ClipboardList,
   Settings,
   LogOut,
+  IndianRupee,
+  Award,
+  FileText,
+  CheckCircle,
+  Megaphone,
+  BarChart3,
 } from "lucide-react"
 
 interface SidebarProps {
@@ -33,11 +39,15 @@ export function StudentSidebar({ className = "" }: SidebarProps) {
     { href: "/student/materials", icon: ClipboardList, label: "Tests & Exams" },
     { href: "/student/events", icon: Users, label: "Events" },
     { href: "/student/food", icon: UtensilsCrossed, label: "Food Ordering" },
-     { href: "/student/resources", icon: BookOpen, label: "Resources" },
+    { href: "/student/resources", icon: BookOpen, label: "Resources" },
     { href: "/student/ai-mentor", icon: MapPin, label: "Campus Navigation" },
     { href: "/student/attendance", icon: UserCheck, label: "Attendance" },
+    { href: "/performance", icon: BarChart3, label: "Predict Student Performance" },
     { href: "/student/internships", icon: Briefcase, label: "Internships" },
     { href: "/student/parking", icon: Car, label: "Parking" },
+    { href: "/student/fees", icon: IndianRupee, label: "Pay Fees" },
+    { href: "/student/examination", icon: Award, label: "Exam Cell" },
+    { href: "/student/announcements", icon: Megaphone, label: "Announcements" },
   ]
 
   return (
@@ -49,7 +59,7 @@ export function StudentSidebar({ className = "" }: SidebarProps) {
         <p className="text-zinc-400 text-sm mt-1">Student Portal</p>
       </div>
 
-      <nav className="flex-1 px-4 space-y-2">
+      <nav className="px-4 space-y-2">
         {navItems.map((item) => {
           const Icon = item.icon
           const active = isActive(item.href)

@@ -625,3 +625,137 @@ export const ClassroomModel =
 export const ClassroomEnrollmentModel =
   models.ClassroomEnrollment ||
   model("ClassroomEnrollment", ClassroomEnrollmentSchema);
+
+// ── Student Fees Schema ────────────────────────────────────────────────────
+const StudentFeesSchema = new Schema(
+  {
+    studentId: { type: Schema.Types.ObjectId, ref: "Student", required: true },
+    semester: { type: Number, required: true }, // 1-8
+    academicYear: { type: String, required: true }, // "2024-25"
+    totalFees: { type: Number, required: true },
+    paidAmount: { type: Number, default: 0 },
+    dueAmount: { type: Number, required: true },
+    paymentStatus: { type: String, enum: ["pending", "partial", "paid"], default: "pending" },
+    dueDateLimit: { type: Date, required: true },
+    paymentRecords: [{
+      amount: Number,
+      paymentDate: Date,
+      paymentMethod: { type: String, enum: ["online", "check", "cash"] },
+      transactionId: String,
+      reference: String,
+    }],
+  },
+  { timestamps: true }
+);
+
+StudentFeesSchema.index({ studentId: 1, semester: 1 });
+StudentFeesSchema.index({ paymentStatus: 1 });
+
+// ── Exam Hall Ticket Schema ────────────────────────────────────────────────
+const ExamHallTicketSchema = new Schema(
+  {
+    studentId: { type: Schema.Types.ObjectId, ref: "Student", required: true },
+    hallTicketNumber: { type: String, unique: true, required: true },
+    examCode: { type: String, required: true },
+    examName: { type: String, required: true },
+    examDate: { type: Date, required: true },
+    examTime: { type: String, required: true }, // "9:00 AM - 12:00 PM"
+    venue: { type: String, required: true },
+    seatNumber: { type: String, required: true },
+    reportingTime: { type: String, required: true },
+    instructions: [String],
+    issuedDate: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
+
+ExamHallTicketSchema.index({ studentId: 1, examDate: 1 });
+ExamHallTicketSchema.index({ hallTicketNumber: 1 });
+
+// ── Transcript Schema ──────────────────────────────────────────────────────
+const TranscriptSchema = new Schema(
+  {
+    studentId: { type: Schema.Types.ObjectId, ref: "Student", required: true },
+    academicYear: { type: String, required: true },
+    semester: { type: Number, required: true },
+    courses: [{
+      courseCode: String,
+      courseName: String,
+      credits: Number,
+      grade: String,
+      gpa: Number,
+      marks: Number,
+    }],
+    sgpa: { type: Number, required: true }, // Semester GPA
+    cgpa: { type: Number, required: true }, // Cumulative GPA
+    totalCreditsEarned: { type: Number, default: 0 },
+    status: { type: String, enum: ["active", "dismissed", "passed_out"], default: "active" },
+    issuedDate: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
+
+TranscriptSchema.index({ studentId: 1, academicYear: 1, semester: 1 });
+
+// ── Exam Result Schema ─────────────────────────────────────────────────────
+const ExamResultSchema = new Schema(
+  {
+    studentId: { type: Schema.Types.ObjectId, ref: "Student", required: true },
+    courseCode: { type: String, required: true },
+    courseName: { type: String, required: true },
+    semester: { type: Number, required: true },
+    examType: { type: String, enum: ["mid-term", "end-term", "practical", "continuous"], required: true },
+    totalMarks: { type: Number, required: true },
+    marksObtained: { type: Number, required: true },
+    grade: { type: String }, // A, B, C, D, F
+    gpa: { type: Number }, // 4.0 scale
+    resultDate: { type: Date, required: true },
+    status: { type: String, enum: ["pass", "fail"], default: "pass" },
+    remarks: { type: String },
+    publishedAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
+
+ExamResultSchema.index({ studentId: 1, semester: 1 });
+ExamResultSchema.index({ resultDate: -1 });
+
+// ── Announcement Schema ────────────────────────────────────────────────────
+const AnnouncementSchema = new Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    content: { type: String, required: true },
+    postedBy: { type: String, enum: ["admin", "teacher"], required: true },
+    postedByName: { type: String, required: true },
+    postedById: { type: Schema.Types.ObjectId, ref: "Teacher" },
+    category: { type: String, enum: ["academic", "events", "maintenance", "urgent", "general"], default: "general" },
+    targetAudience: { type: String, enum: ["all-students", "all-teachers", "all", "specific"], default: "all-students" },
+    priority: { type: String, enum: ["low", "normal", "high", "urgent"], default: "normal" },
+    attachments: [{ fileName: String, fileUrl: String, uploadDate: Date }],
+    expiryDate: { type: Date },
+    isActive: { type: Boolean, default: true },
+    viewCount: { type: Number, default: 0 },
+  },
+  { timestamps: true }
+);
+
+AnnouncementSchema.index({ category: 1, isActive: 1 });
+AnnouncementSchema.index({ createdAt: -1 });
+AnnouncementSchema.index({ priority: 1, isActive: 1 });
+
+// ── Export Models ──────────────────────────────────────────────────────────
+export const StudentFeesModel =
+  models.StudentFees || model("StudentFees", StudentFeesSchema);
+
+export const ExamHallTicketModel =
+  models.ExamHallTicket || model("ExamHallTicket", ExamHallTicketSchema);
+
+export const TranscriptModel =
+  models.Transcript || model("Transcript", TranscriptSchema);
+
+export const ExamResultModel =
+  models.ExamResult || model("ExamResult", ExamResultSchema);
+
+export const AnnouncementModel =
+  models.Announcement || model("Announcement", AnnouncementSchema);

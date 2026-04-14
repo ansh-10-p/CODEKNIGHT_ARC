@@ -1,7 +1,51 @@
 // Helper function to get current user from localStorage (client-side)
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { connectToDatabase } from "@/lib/db"
+ 
+type AuthUser = {
+  id: string
+  email: string
+  password: string
+  role: "student" | "teacher" | "canteen"
+  name: string
+}
+ 
+const authUsers: AuthUser[] = [
+  {
+    id: "student1",
+    email: "rahul.sharma@student.edu",
+    password: "Password@123",
+    role: "student",
+    name: "Rahul Sharma",
+  },
+  {
+    id: "teacher1",
+    email: "jane.doe@teacher.edu",
+    password: "Password@123",
+    role: "teacher",
+    name: "Jane Doe",
+  },
+  {
+    id: "canteen1",
+    email: "canteen.manager@canteen.edu",
+    password: "Password@123",
+    role: "canteen",
+    name: "Canteen Manager",
+  },
+]
+ 
+export function findUserByCredentials(
+  email: string,
+  password: string,
+  role: string,
+) {
+  return authUsers.find(
+    (user) =>
+      user.email.toLowerCase() === email.toLowerCase() &&
+      user.password === password &&
+      user.role === role,
+  )
+}
  
 // ── Extend next-auth types ────────────────────────────────────────────────────
 // (If you have a types/next-auth.d.ts file, you can move these there instead)
@@ -36,31 +80,18 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email:    { label: "Email",    type: "email"    },
         password: { label: "Password", type: "password" },
+        role:     { label: "Role",     type: "text"     },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null
- 
-        try {
-          await connectToDatabase()
- 
-          // ── Replace the block below with your actual User model ──
-          // Example with bcrypt:
-          //
-          // import User from "@/lib/user-model"
-          // import bcrypt from "bcryptjs"
-          //
-          // const user = await User.findOne({ email: credentials.email })
-          // if (!user) return null
-          // const valid = await bcrypt.compare(credentials.password, user.password)
-          // if (!valid) return null
-          // return { id: user._id.toString(), email: user.email, name: user.name, role: user.role }
- 
-          console.warn("authorize(): No user model wired up yet — returning null")
-          return null
-        } catch (err) {
-          console.error("authorize() error:", err)
+        if (!credentials?.email || !credentials?.password || !credentials?.role) {
           return null
         }
+ 
+        return findUserByCredentials(
+          credentials.email,
+          credentials.password,
+          credentials.role,
+        ) ?? null
       },
     }),
   ],
@@ -69,7 +100,6 @@ export const authOptions: NextAuthOptions = {
  
   callbacks: {
     async jwt({ token, user }) {
-      // Runs on sign-in: attach extra fields to the JWT
       if (user) {
         token.id   = user.id
         token.role = (user as { role?: string }).role
@@ -77,7 +107,6 @@ export const authOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
-      // Runs on every request: expose token fields on session.user
       if (session.user) {
         session.user.id   = token.id   as string
         session.user.role = token.role as string | undefined
@@ -90,5 +119,5 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
  
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "dev-secret",
 }

@@ -14,7 +14,7 @@ import {
   Calendar, Briefcase, Bell, Users, BookOpen, ShoppingBag,
   IndianRupee, Car, TrendingUp, ArrowUpRight, ArrowDownRight,
   CheckCircle, Clock, AlertCircle, Activity, Star, Code,
-  Music, Trophy, Lightbulb, Palette, MapPin
+  Music, Trophy, Lightbulb, Palette, MapPin, FileText, Award, Megaphone
 } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -147,9 +147,9 @@ export default function StudentDashboard() {
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
             <KPI icon={CheckCircle}  label="Avg Attendance"    value="87%"  sub="This semester"         trend="+5%"   up color="text-green-400"  bg="bg-green-500/10"  />
             <KPI icon={Calendar}     label="Events Registered" value={5}    sub="2 upcoming"             trend="+2"    up color="text-blue-400"   bg="bg-blue-500/10"   />
+            <KPI icon={IndianRupee}  label="Fees Due"          value="₹50k" sub="Sem 7"                 trend="Action" up={false} color="text-red-400"   bg="bg-red-500/10"   />
             <KPI icon={ShoppingBag}  label="Food Orders"       value={18}   sub="This month"             trend="+6"    up color="text-[#e78a53]"  bg="bg-[#e78a53]/10"  />
             <KPI icon={Briefcase}    label="Applications"      value={3}    sub="1 under review"         trend="+1"    up color="text-purple-400" bg="bg-purple-500/10" />
-            <KPI icon={IndianRupee}  label="Total Spent"       value="₹2.4k" sub="Events + Food"         trend="+₹840" up color="text-yellow-400" bg="bg-yellow-500/10" />
             <KPI icon={BookOpen}     label="Resources"         value={7}    sub="3 downloaded this week" trend="+3"    up color="text-teal-400"   bg="bg-teal-500/10"   />
           </div>
 
@@ -328,28 +328,6 @@ export default function StudentDashboard() {
                 </CardContent>
               </Card>
 
-              {/* Quick links */}
-              <Card className="bg-zinc-900/60 border-zinc-800">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-white text-sm">Quick Access</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-2">
-                  {[
-                    { href: "/student/food",        icon: ShoppingBag, label: "Order Food",  color: "text-[#e78a53]", bg: "bg-[#e78a53]/10" },
-                    { href: "/student/events",      icon: Calendar,    label: "Events",      color: "text-blue-400",  bg: "bg-blue-500/10"  },
-                    { href: "/student/resources",   icon: BookOpen,    label: "Resources",   color: "text-green-400", bg: "bg-green-500/10" },
-                    { href: "/student/parking",     icon: Car,         label: "Parking",     color: "text-yellow-400",bg: "bg-yellow-500/10"},
-                  ].map(l => {
-                    const Icon = l.icon
-                    return (
-                      <Link key={l.href} href={l.href} className={`flex flex-col items-center gap-1.5 p-3 rounded-xl ${l.bg} border border-transparent hover:border-zinc-700 transition-all`}>
-                        <Icon className={`h-5 w-5 ${l.color}`} />
-                        <span className="text-xs text-zinc-300">{l.label}</span>
-                      </Link>
-                    )
-                  })}
-                </CardContent>
-              </Card>
             </div>
           </div>
 

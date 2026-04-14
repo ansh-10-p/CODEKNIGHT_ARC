@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { StudentSidebar } from "@/components/student-sidebar"
 import {
-  BookOpen, Download, FileText, Search, Clock, Eye,
+  BookOpen, Download, FileText, Search, Eye,
   Wrench, Building, Calendar, BookMarked, Presentation,
-  ClipboardList, User, Printer,
+  ClipboardList, User, Printer, Star,
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -62,14 +62,28 @@ const campusCatMeta: Record<string,{icon:any,color:string,bg:string}> = {
 
 const fmt = (d: string) => new Date(d).toLocaleDateString("en-IN", { day:"2-digit", month:"short", year:"numeric" })
 
+interface WebResource {
+  title: string
+  url: string
+  description: string
+  type: "book" | "course" | "tutorial" | "documentation" | "article"
+  difficulty: "beginner" | "intermediate" | "advanced"
+  rating: number
+}
+
+type TabType = "documents" | "campus" | "web"
+
 export default function StudentResourcesPage() {
   const [campusRes, setCampusRes]   = useState<CampusResource[]>([])
   const [teacherDocs, setTeacherDocs] = useState<TeacherDoc[]>([])
+  const [webResources, setWebResources] = useState<WebResource[]>([])
   const [loading, setLoading]       = useState(true)
-  const [tab, setTab]               = useState<"documents"|"campus">("documents")
+  const [tab, setTab]               = useState<TabType>("documents")
   const [search, setSearch]         = useState("")
   const [catFilter, setCatFilter]   = useState("all")
   const [preview, setPreview]       = useState<TeacherDoc | null>(null)
+  const [searchingWeb, setSearchingWeb] = useState(false)
+  const [webSearchTopic, setWebSearchTopic] = useState("")
 
   useEffect(() => { fetchResources() }, [])
 
@@ -84,6 +98,26 @@ export default function StudentResourcesPage() {
       setCampusRes(mockCampus)
       setTeacherDocs(mockTeacherDocs)
     } finally { setLoading(false) }
+  }
+
+  const searchWebResources = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!webSearchTopic.trim()) return
+
+    setSearchingWeb(true)
+    try {
+      const res = await fetch("/api/student/resources/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic: webSearchTopic }),
+      })
+      const data = await res.json()
+      setWebResources(data.resources || [])
+    } catch (error) {
+      console.error("Web search failed:", error)
+    } finally {
+      setSearchingWeb(false)
+    }
   }
 
   /* ─── PDF download via window.print() ─── */
@@ -154,8 +188,9 @@ export default function StudentResourcesPage() {
             {[
               { key:"documents", label:"Teacher Documents", count:teacherDocs.length },
               { key:"campus",    label:"Campus Resources",  count:campusRes.length  },
+              { key:"web",       label:"Web Resources",     count:webResources.length },
             ].map(t => (
-              <button key={t.key} onClick={() => { setTab(t.key as any); setCatFilter("all") }}
+              <button key={t.key} onClick={() => { setTab(t.key as TabType); setCatFilter("all") }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${tab === t.key ? "bg-[#e78a53]/10 text-[#e78a53] border-[#e78a53]/30" : "bg-zinc-900/60 text-zinc-400 border-zinc-800 hover:text-white"}`}>
                 {t.label}
                 <span className={`text-xs px-1.5 py-0.5 rounded-full ${tab === t.key ? "bg-[#e78a53]/20 text-[#e78a53]" : "bg-zinc-800 text-zinc-500"}`}>{t.count}</span>
@@ -164,6 +199,7 @@ export default function StudentResourcesPage() {
           </div>
 
           {/* Category filter */}
+          {tab !== "web" && (
           <div className="flex gap-2 flex-wrap">
             {tab === "documents"
               ? ["all","notes","slides","assignment","reference"].map(c => (
@@ -176,6 +212,26 @@ export default function StudentResourcesPage() {
                 ))
             }
           </div>
+          )}
+
+          {/* Web Search Form */}
+          {tab === "web" && (
+            <form onSubmit={searchWebResources} className="flex gap-2">
+              <Input
+                value={webSearchTopic}
+                onChange={(e) => setWebSearchTopic(e.target.value)}
+                placeholder="Search for topics (e.g., 'Machine Learning', 'React Framework')"
+                className="bg-zinc-800/50 border-zinc-700 text-white placeholder-zinc-500"
+              />
+              <Button
+                type="submit"
+                disabled={searchingWeb || !webSearchTopic.trim()}
+                className="bg-[#e78a53] hover:bg-[#e78a53]/90 disabled:opacity-40"
+              >
+                {searchingWeb ? "Searching..." : "Search"}
+              </Button>
+            </form>
+          )}
 
           {/* Loading */}
           {loading ? (
@@ -215,7 +271,7 @@ export default function StudentResourcesPage() {
                 })}
               </div>
             )
-          ) : (
+          ) : tab === "campus" ? (
             /* ── Campus Resources ── */
             filteredCampus.length === 0 ? (
               <div className="py-16 text-center"><BookOpen className="h-12 w-12 text-zinc-600 mx-auto mb-3" /><p className="text-zinc-400">No campus resources found</p></div>
@@ -250,32 +306,94 @@ export default function StudentResourcesPage() {
                 })}
               </div>
             )
+          ) : (
+            /* ── Web Resources ── */
+            webResources.length === 0 && !searchingWeb ? (
+              <div className="py-16 text-center"><Search className="h-12 w-12 text-zinc-600 mx-auto mb-3" /><p className="text-zinc-400">Search for topics to discover relevant web resources</p></div>
+            ) : searchingWeb ? (
+              <div className="py-16 text-center"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#e78a53] mx-auto" /></div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {webResources.map((resource) => {
+                  const typeColors: Record<string, string> = {
+                    book: "bg-blue-500/10 text-blue-400",
+                    course: "bg-purple-500/10 text-purple-400",
+                    tutorial: "bg-green-500/10 text-green-400",
+                    documentation: "bg-yellow-500/10 text-yellow-400",
+                    article: "bg-pink-500/10 text-pink-400",
+                  }
+                  const diffColors: Record<string, string> = {
+                    beginner: "bg-green-500/10 text-green-400",
+                    intermediate: "bg-yellow-500/10 text-yellow-400",
+                    advanced: "bg-red-500/10 text-red-400",
+                  }
+                  // Use a composite key to avoid index-based keys
+                  const key = `${resource.url}-${resource.title}`
+                  return (
+                    <Card key={key} className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-700 transition-all flex flex-col">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <div className="flex gap-2 flex-wrap">
+                            <Badge className={`${typeColors[resource.type] || "bg-zinc-600 text-zinc-300"} text-xs capitalize`}>{resource.type}</Badge>
+                            <Badge className={`${diffColors[resource.difficulty] || "bg-zinc-600 text-zinc-300"} text-xs capitalize`}>{resource.difficulty}</Badge>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Star className="h-3.5 w-3.5 text-yellow-400 fill-yellow-400" />
+                            <span className="text-xs text-yellow-400">{resource.rating.toFixed(1)}</span>
+                          </div>
+                        </div>
+                        <CardTitle className="text-white text-base leading-snug">{resource.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-0 flex-1 flex flex-col justify-between gap-3">
+                        <p className="text-zinc-500 text-xs line-clamp-2">{resource.description}</p>
+                        <a href={resource.url} target="_blank" rel="noopener noreferrer" className="text-[#e78a53] hover:underline text-xs truncate">
+                          {resource.url}
+                        </a>
+                        <Button asChild className="bg-[#e78a53] hover:bg-[#e78a53]/90 w-full text-xs gap-1">
+                          <a href={resource.url} target="_blank" rel="noopener noreferrer"><Eye className="h-3.5 w-3.5" /> View Resource</a>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            )
+          )}
+
+          {/* ── Preview Dialog ── */}
+          {preview && (
+            <Dialog open={!!preview} onOpenChange={() => setPreview(null)}>
+              <DialogContent className="bg-zinc-900 border-zinc-700 max-w-3xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge className={`${docCatMeta[preview.category].bg} ${docCatMeta[preview.category].color} border ${docCatMeta[preview.category].border} text-xs`}>
+                      {docCatMeta[preview.category].label}
+                    </Badge>
+                    <span className="text-zinc-500 text-xs">{preview.subject}</span>
+                  </div>
+                  <DialogTitle className="text-white mt-1">{preview.title}</DialogTitle>
+                  <p className="text-zinc-500 text-xs">
+                    By {preview.postedByName} · {fmt(preview.createdAt)}
+                  </p>
+                </DialogHeader>
+                <div className="mt-2 bg-zinc-950 rounded-xl p-5 border border-zinc-800">
+                  <pre className="text-zinc-300 text-sm whitespace-pre-wrap font-mono leading-relaxed">
+                    {preview.content}
+                  </pre>
+                </div>
+                <div className="flex justify-end gap-2 mt-2">
+                  <Button variant="outline" onClick={() => setPreview(null)} className="border-zinc-700 text-zinc-300">
+                    Close
+                  </Button>
+                  <Button onClick={() => downloadAsPDF(preview)} className="bg-[#e78a53] hover:bg-[#e78a53]/90 gap-2">
+                    <Printer className="h-4 w-4" /> Download PDF
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           )}
         </div>
       </main>
-
-      {/* ── Preview Dialog ── */}
-      {preview && (
-        <Dialog open={!!preview} onOpenChange={() => setPreview(null)}>
-          <DialogContent className="bg-zinc-900 border-zinc-700 max-w-3xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge className={`${docCatMeta[preview.category].bg} ${docCatMeta[preview.category].color} border ${docCatMeta[preview.category].border} text-xs`}>{docCatMeta[preview.category].label}</Badge>
-                <span className="text-zinc-500 text-xs">{preview.subject}</span>
-              </div>
-              <DialogTitle className="text-white mt-1">{preview.title}</DialogTitle>
-              <p className="text-zinc-500 text-xs">By {preview.postedByName} · {fmt(preview.createdAt)}</p>
-            </DialogHeader>
-            <div className="mt-2 bg-zinc-950 rounded-xl p-5 border border-zinc-800">
-              <pre className="text-zinc-300 text-sm whitespace-pre-wrap font-mono leading-relaxed">{preview.content}</pre>
-            </div>
-            <div className="flex justify-end gap-2 mt-2">
-              <Button variant="outline" onClick={() => setPreview(null)} className="border-zinc-700 text-zinc-300">Close</Button>
-              <Button onClick={() => downloadAsPDF(preview)} className="bg-[#e78a53] hover:bg-[#e78a53]/90 gap-2"><Printer className="h-4 w-4" /> Download PDF</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </div>
   )
 }

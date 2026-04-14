@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Calendar, UtensilsCrossed, UserCheck, Settings, LogOut, Users, BookOpen, ClipboardList, Car, Upload } from "lucide-react"
+import { Calendar, UtensilsCrossed, UserCheck, Settings, LogOut, Users, BookOpen, ClipboardList, Car, Upload, BarChart3 } from "lucide-react"
 
 interface SidebarProps {
     className?: string
@@ -20,6 +20,7 @@ export function TeacherSidebar({ className = "" }: SidebarProps) {
         // { href: "/teacher/attendance-management", icon: UserCheck, label: "Attendance" },
         { href: "/teacher/food", icon: UtensilsCrossed, label: "Food" },
         { href: "/teacher/classroom/attendance", icon: UserCheck, label: "Attendance" },
+        { href: "/performance", icon: BarChart3, label: "Predict Student Performance" },
         { href: "/teacher/classroom/materials", icon: ClipboardList, label: "Tests & Exams" },
         { href: "/teacher/classroom/schedule", icon: ClipboardList, label: "Schedule" },
         { href: "/teacher/resources", icon: Upload, label: "Resources" },
