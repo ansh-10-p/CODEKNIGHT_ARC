@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { StudentModel, TeacherModel, CanteenModel } from "@/lib/models";
@@ -68,6 +69,8 @@ export async function POST(request: Request) {
     );
   }
 =======
+=======
+>>>>>>> 8879a13 (Initial commit)
 import { NextResponse } from "next/server"
 import { findUserByCredentials } from "@/lib/auth-middleware"
 
@@ -90,5 +93,8 @@ export async function POST(req: Request) {
     name: user.name,
     role: user.role,
   })
+<<<<<<< HEAD
 >>>>>>> Initial commit
+=======
+>>>>>>> 8879a13 (Initial commit)
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -39,6 +40,8 @@ export async function POST(request: Request) {
     );
   }
 =======
+=======
+>>>>>>> 8879a13 (Initial commit)
 import { NextResponse } from "next/server"
 
 const adminUsers = [
@@ -74,5 +77,8 @@ export async function POST(req: Request) {
     name: admin.name,
     role: admin.role,
   })
+<<<<<<< HEAD
 >>>>>>> Initial commit
+=======
+>>>>>>> 8879a13 (Initial commit)
 }
