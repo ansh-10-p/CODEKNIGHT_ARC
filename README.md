@@ -8,6 +8,16 @@ A comprehensive, modern web application designed to streamline campus operations
 
 ARC (Advanced Resource & Community Management) is an all-in-one campus management platform that bridges the gap between students, faculty, and institutional services. With integrated AI mentorship, real-time notifications, and role-based dashboards, ARC transforms how educational institutions operate and how stakeholders interact within them.
 
+---
+
+## 📹 Demo
+
+Watch the ARC platform in action:
+- **[Demo Video & Resources]
+https://drive.google.com/drive/folders/1oIR6s3RreYCWm6Vy1ZrBXr4e4zL4LSW4
+
+---
+
 ### Key Features
 
 - **AI-Powered Learning Support**: Intelligent AI mentor with voice integration for personalized academic guidance
