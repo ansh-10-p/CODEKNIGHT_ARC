@@ -61,8 +61,7 @@ declare global {
   }
 }
 
-const DEMO_RAZORPAY_KEY_ID =
-  process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_SbORfjGVKnaETk";
+const RAZORPAY_PUBLIC_KEY = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
 
 export function OrderDialog({
   isOpen,
@@ -72,7 +71,7 @@ export function OrderDialog({
 }: OrderDialogProps) {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<"online" | "offline">(
-    "online"
+    "online",
   );
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -128,14 +127,14 @@ export function OrderDialog({
           return { ...item, quantity: newQuantity };
         }
         return item;
-      })
+      }),
     );
   };
 
   const calculateTotals = () => {
     const subtotal = orderItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0
+      0,
     );
     const tax = 0;
     const deliveryFee = 0;
@@ -145,9 +144,12 @@ export function OrderDialog({
 
   const buildDemoOrder = () => {
     const { subtotal, tax, deliveryFee, total } = calculateTotals();
-    const maxPrepMinutes = Math.max(...orderItems.map((item) => item.prepTime || 15), 15);
+    const maxPrepMinutes = Math.max(
+      ...orderItems.map((item) => item.prepTime || 15),
+      15,
+    );
     const estimatedTime = new Date(
-      Date.now() + (maxPrepMinutes + 10) * 60 * 1000
+      Date.now() + (maxPrepMinutes + 10) * 60 * 1000,
     ).toISOString();
     const orderId = `ORD-${Date.now()}`;
 
@@ -202,15 +204,17 @@ export function OrderDialog({
 
     await new Promise<void>((resolve, reject) => {
       const existingScript = document.querySelector(
-        'script[src="https://checkout.razorpay.com/v1/checkout.js"]'
+        'script[src="https://checkout.razorpay.com/v1/checkout.js"]',
       ) as HTMLScriptElement | null;
 
       if (existingScript) {
-        existingScript.addEventListener("load", () => resolve(), { once: true });
+        existingScript.addEventListener("load", () => resolve(), {
+          once: true,
+        });
         existingScript.addEventListener(
           "error",
           () => reject(new Error("Razorpay SDK failed to load.")),
-          { once: true }
+          { once: true },
         );
         return;
       }
@@ -219,8 +223,7 @@ export function OrderDialog({
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
       script.onload = () => resolve();
-      script.onerror = () =>
-        reject(new Error("Razorpay SDK failed to load."));
+      script.onerror = () => reject(new Error("Razorpay SDK failed to load."));
       document.body.appendChild(script);
     });
 
@@ -231,14 +234,22 @@ export function OrderDialog({
     const sdkReady = await ensureRazorpayLoaded();
 
     if (!sdkReady || !window.Razorpay) {
-      throw new Error("Razorpay SDK is unavailable. Please refresh and try again.");
+      throw new Error(
+        "Razorpay SDK is unavailable. Please refresh and try again.",
+      );
     }
 
     const demoOrder = buildDemoOrder();
     const amountInPaisa = Math.round(demoOrder.totalAmount * 100);
 
+    if (!RAZORPAY_PUBLIC_KEY) {
+      throw new Error(
+        "Razorpay public key is not configured. Set NEXT_PUBLIC_RAZORPAY_KEY_ID in your environment.",
+      );
+    }
+
     const options = {
-      key: DEMO_RAZORPAY_KEY_ID,
+      key: RAZORPAY_PUBLIC_KEY,
       amount: amountInPaisa,
       currency: "INR",
       name: "Arc Campus Food",
@@ -248,7 +259,8 @@ export function OrderDialog({
           ...demoOrder,
           paymentStatus: "paid",
           razorpayPaymentId: response.razorpay_payment_id,
-          razorpayOrderId: response.razorpay_order_id || `demo_rzp_${Date.now()}`,
+          razorpayOrderId:
+            response.razorpay_order_id || `demo_rzp_${Date.now()}`,
           razorpaySignature: response.razorpay_signature,
         };
 
@@ -308,7 +320,7 @@ export function OrderDialog({
       setPaymentError(
         error instanceof Error
           ? error.message
-          : "Error placing order. Please try again."
+          : "Error placing order. Please try again.",
       );
       setIsLoading(false);
     }
@@ -331,7 +343,8 @@ export function OrderDialog({
                   Place Order
                 </DialogTitle>
                 <p className="text-sm text-zinc-400 mt-2">
-                  Review your order, choose a payment method, and confirm pickup from {menuItem.canteenName}.
+                  Review your order, choose a payment method, and confirm pickup
+                  from {menuItem.canteenName}.
                 </p>
               </div>
               <Badge className="bg-[#e78a53]/10 border border-[#e78a53]/30 text-[#e78a53]">
@@ -340,16 +353,28 @@ export function OrderDialog({
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
-                <p className="text-xs uppercase tracking-wide text-zinc-500">Canteen</p>
-                <p className="text-sm font-medium text-white mt-2">{menuItem.canteenName}</p>
+                <p className="text-xs uppercase tracking-wide text-zinc-500">
+                  Canteen
+                </p>
+                <p className="text-sm font-medium text-white mt-2">
+                  {menuItem.canteenName}
+                </p>
               </div>
               <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
-                <p className="text-xs uppercase tracking-wide text-zinc-500">Items</p>
-                <p className="text-sm font-medium text-white mt-2">{orderItems.length} selected</p>
+                <p className="text-xs uppercase tracking-wide text-zinc-500">
+                  Items
+                </p>
+                <p className="text-sm font-medium text-white mt-2">
+                  {orderItems.length} selected
+                </p>
               </div>
               <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
-                <p className="text-xs uppercase tracking-wide text-zinc-500">Total</p>
-                <p className="text-sm font-medium text-[#e78a53] mt-2">₹{total}</p>
+                <p className="text-xs uppercase tracking-wide text-zinc-500">
+                  Total
+                </p>
+                <p className="text-sm font-medium text-[#e78a53] mt-2">
+                  ₹{total}
+                </p>
               </div>
             </div>
           </div>
@@ -564,7 +589,8 @@ export function OrderDialog({
             <div className="p-5 bg-zinc-800/30 rounded-xl border border-zinc-800 space-y-4">
               <div className="flex items-center justify-between">
                 <Badge className="bg-[#e78a53]/10 border border-[#e78a53]/30 text-[#e78a53]">
-                  {orderItems.length} {orderItems.length === 1 ? "item" : "items"}
+                  {orderItems.length}{" "}
+                  {orderItems.length === 1 ? "item" : "items"}
                 </Badge>
                 <div className="flex items-center gap-2 text-sm text-zinc-400">
                   <Clock className="h-4 w-4" />
@@ -600,7 +626,9 @@ export function OrderDialog({
               <div className="flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="font-medium text-red-200">Payment could not be started</p>
+                  <p className="font-medium text-red-200">
+                    Payment could not be started
+                  </p>
                   <p className="mt-1">{paymentError}</p>
                 </div>
               </div>
@@ -625,7 +653,9 @@ export function OrderDialog({
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  {paymentMethod === "online" ? "Opening Razorpay..." : "Confirming Order..."}
+                  {paymentMethod === "online"
+                    ? "Opening Razorpay..."
+                    : "Confirming Order..."}
                 </>
               ) : (
                 <>
@@ -634,7 +664,9 @@ export function OrderDialog({
                   ) : (
                     <Wallet className="h-4 w-4 mr-2" />
                   )}
-                  {paymentMethod === "online" ? `Pay Now (₹${total})` : `Confirm Order (₹${total})`}
+                  {paymentMethod === "online"
+                    ? `Pay Now (₹${total})`
+                    : `Confirm Order (₹${total})`}
                 </>
               )}
             </Button>

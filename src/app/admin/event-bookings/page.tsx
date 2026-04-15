@@ -93,19 +93,30 @@ export default function AdminEventBookingsPage() {
     fetchBookings()
   }, [])
 
+  // Helper to safely parse JSON response
+  async function safeParseJSON(response: Response) {
+    const contentType = response.headers.get("content-type")
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json()
+    }
+    const text = await response.text()
+    throw new Error(`Server returned ${contentType || "non-JSON"} response. First 100 chars: ${text.slice(0, 100)}`)
+  }
+
   const fetchBookings = async () => {
     try {
       setLoading(true)
+      setError(null)
       const response = await fetch('/api/event-bookings?limit=100')
       if (!response.ok) {
-        throw new Error('Failed to fetch bookings')
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
-      const data = await response.json()
+      const data = await safeParseJSON(response)
       setBookings(data.bookings || [])
       setStats(data.stats || { totalBookings: 0, totalRevenue: 0 })
     } catch (error) {
       console.error('Error fetching bookings:', error)
-      setError('Failed to load bookings. Please try again later.')
+      setError(error instanceof Error ? error.message : 'Failed to load bookings. Please try again later.')
     } finally {
       setLoading(false)
     }
@@ -119,12 +130,14 @@ export default function AdminEventBookingsPage() {
       setLoadingPaymentDetails(true)
       try {
         const response = await fetch(`/api/payment-details?paymentId=${booking.razorpayPaymentId}`)
-        if (response.ok) {
-          const data = await response.json()
-          setPaymentDetails(data)
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
         }
+        const data = await safeParseJSON(response)
+        setPaymentDetails(data)
       } catch (error) {
         console.error('Error fetching payment details:', error)
+        // Don't show error dialog, just log it; payment details are optional
       } finally {
         setLoadingPaymentDetails(false)
       }

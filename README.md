@@ -13,8 +13,9 @@ ARC (Advanced Resource & Community Management) is an all-in-one campus managemen
 ## 📹 Demo
 
 Watch the ARC platform in action:
-- **[Demo Video & Resources]
-https://drive.google.com/drive/folders/1oIR6s3RreYCWm6Vy1ZrBXr4e4zL4LSW4
+
+- \*\*[Demo Video & Resources]
+  https://drive.google.com/drive/folders/1oIR6s3RreYCWm6Vy1ZrBXr4e4zL4LSW4
 
 ---
 
@@ -37,6 +38,7 @@ https://drive.google.com/drive/folders/1oIR6s3RreYCWm6Vy1ZrBXr4e4zL4LSW4
 ### Tech Stack
 
 **Frontend:**
+
 - **Framework**: [Next.js 15.5.14](https://nextjs.org/) – React-based framework with server-side rendering
 - **UI Library**: [React 19](https://react.dev/) – Modern UI component architecture
 - **Language**: [TypeScript](https://www.typescriptlang.org/) – Type-safe development
@@ -47,6 +49,7 @@ https://drive.google.com/drive/folders/1oIR6s3RreYCWm6Vy1ZrBXr4e4zL4LSW4
 - **Charts & Data Visualization**: [Recharts](https://recharts.org/) – Composable charting library
 
 **Backend & Services:**
+
 - **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose ODM](https://mongoosejs.com/)
 - **Authentication**: [NextAuth.js v4](https://next-auth.js.org/) – Flexible authentication framework
 - **AI Integration**: [OpenAI API](https://openai.com/api/) – For AI mentor and content generation
@@ -56,6 +59,7 @@ https://drive.google.com/drive/folders/1oIR6s3RreYCWm6Vy1ZrBXr4e4zL4LSW4
 - **QR Codes**: [QRCode.js](https://davidshimjs.github.io/qrcodejs/) – Dynamic QR code generation
 
 **DevOps & Tooling:**
+
 - **Package Manager**: pnpm
 - **Build Tool**: Next.js built-in build system
 - **Linting**: ESLint with Next.js config
@@ -68,68 +72,72 @@ https://drive.google.com/drive/folders/1oIR6s3RreYCWm6Vy1ZrBXr4e4zL4LSW4
 
 ```
 CODEKNIGHT_ARC/
-├── app/                              # Next.js app directory
-│   ├── layout.tsx                   # Root layout
-│   ├── page.tsx                     # Homepage
-│   ├── canteen/                     # Canteen management module
-│   │   ├── dashboard/               # Canteen dashboard
-│   │   ├── menu/                    # Menu management
-│   │   ├── orders/                  # Order management
-│   │   └── stocks/                  # Inventory management
-│   ├── student/                     # Student portal
-│   │   ├── ai-mentor/               # AI-powered learning assistant
-│   │   ├── attendance/              # Attendance tracking
-│   │   ├── classroom/               # Course materials & discussions
-│   │   ├── dashboard/               # Student dashboard
-│   │   ├── events/                  # Event discovery & booking
-│   │   ├── food/                    # Canteen integration
-│   │   ├── internships/             # Internship opportunities
-│   │   ├── map/                     # Campus map
-│   │   ├── materials/               # Educational resources
-│   │   ├── parking/                 # Parking booking
-│   │   ├── resources/               # Digital library
-│   │   ├── schedule/                # Class schedule viewer
-│   │   └── timetable/               # Personal timetable
-│   ├── teacher/                     # Teacher portal
-│   │   ├── classroom/               # Class management
-│   │   ├── dashboard/               # Teacher dashboard
-│   │   ├── food/                    # Canteen access
-│   │   ├── parking/                 # Parking access
-│   │   └── timetable/               # Schedule management
-│   ├── login/                       # Authentication pages
-│   │   └── page.tsx                 # Login interface
-│   └── signup/                      # Registration
-│       └── page.tsx                 # Signup interface
-├── components/                      # Reusable React components
-│   ├── ui/                          # Base UI components (Radix-based)
-│   ├── ai-mentor/                   # AI mentor specific components
-│   ├── home/                        # Homepage components
-│   ├── magicui/                     # Animated UI components
-│   ├── admin-sidebar.tsx            # Admin navigation
-│   ├── student-sidebar.tsx          # Student navigation
-│   ├── teacher-sidebar.tsx          # Teacher navigation
-│   ├── session-provider.tsx         # NextAuth session provider
-│   ├── theme-provider.tsx           # Theme management
-│   └── [other components]           # Feature-specific components
-├── hooks/                           # Custom React hooks
-│   ├── use-mobile.ts               # Mobile detection
-│   ├── use-toast.ts                # Toast notifications
-│   └── useVapi.ts                  # Vapi integration hook
-├── lib/                             # Utility functions & libraries
-│   ├── db.ts                        # Database connection
-│   ├── auth-client.ts              # Client-side auth utilities
-│   ├── auth-middleware.ts          # Auth middleware
-│   ├── arc-ai.ts                   # AI integration utilities
-│   ├── models.ts                   # Data models & types
-│   ├── order-models.ts             # Order-related models
-│   ├── parking-models.ts           # Parking-related models
-│   └── [other utilities]           # Feature-specific utilities
+├── src/
+│   ├── app/                          # Next.js app directory
+│   │   ├── layout.tsx                # Root layout
+│   │   ├── page.tsx                  # Homepage
+│   │   ├── canteen/                  # Canteen management module
+│   │   │   ├── dashboard/            # Canteen dashboard
+│   │   │   ├── menu/                 # Menu management
+│   │   │   ├── orders/               # Order management
+│   │   │   └── stocks/               # Inventory management
+│   │   ├── student/                  # Student portal
+│   │   │   ├── ai-mentor/            # AI-powered learning assistant
+│   │   │   ├── attendance/           # Attendance tracking
+│   │   │   ├── classroom/            # Course materials & discussions
+│   │   │   ├── dashboard/            # Student dashboard
+│   │   │   ├── events/               # Event discovery & booking
+│   │   │   ├── food/                 # Canteen integration
+│   │   │   ├── internships/          # Internship opportunities
+│   │   │   ├── map/                  # Campus map
+│   │   │   ├── materials/            # Educational resources
+│   │   │   ├── parking/              # Parking booking
+│   │   │   ├── resources/            # Digital library
+│   │   │   ├── schedule/             # Class schedule viewer
+│   │   │   └── timetable/            # Personal timetable
+│   │   ├── teacher/                  # Teacher portal
+│   │   │   ├── classroom/            # Class management
+│   │   │   ├── dashboard/            # Teacher dashboard
+│   │   │   ├── food/                 # Canteen access
+│   │   │   ├── parking/              # Parking access
+│   │   │   └── timetable/            # Schedule management
+│   │   ├── login/                    # Authentication pages
+│   │   │   └── page.tsx              # Login interface
+│   │   └── signup/                   # Registration
+│   │       └── page.tsx              # Signup interface
+│   ├── components/                  # Reusable React components
+│   │   ├── ui/                       # Base UI components (Radix-based)
+│   │   ├── ai-mentor/                # AI mentor specific components
+│   │   ├── home/                     # Homepage components
+│   │   ├── magicui/                  # Animated UI components
+│   │   ├── admin-sidebar.tsx         # Admin navigation
+│   │   ├── student-sidebar.tsx       # Student navigation
+│   │   ├── teacher-sidebar.tsx       # Teacher navigation
+│   │   ├── session-provider.tsx      # NextAuth session provider
+│   │   ├── theme-provider.tsx        # Theme management
+│   │   └── [other components]        # Feature-specific components
+│   ├── hooks/                       # Custom React hooks
+│   │   ├── use-mobile.ts             # Mobile detection
+│   │   ├── use-toast.ts              # Toast notifications
+│   │   └── useVapi.ts                # Vapi integration hook
+│   ├── lib/                         # Utility functions & libraries
+│   │   ├── db.ts                     # Database connection
+│   │   ├── auth-client.ts            # Client-side auth utilities
+│   │   ├── auth-middleware.ts        # Auth middleware
+│   │   ├── arc-ai.ts                 # AI integration utilities
+│   │   ├── models.ts                 # Data models & types
+│   │   ├── order-models.ts           # Order-related models
+│   │   ├── parking-models.ts         # Parking-related models
+│   │   └── [other utilities]         # Feature-specific utilities
+│   ├── public/                       # Static assets
+│   ├── styles/                       # Global styles
+│   ├── config/                       # Environment and app configuration
+│   └── services/                     # Shared backend services
 ├── public/                          # Static assets
 ├── styles/                          # Global styles
 ├── package.json                     # Project dependencies
 ├── tsconfig.json                    # TypeScript configuration
 ├── next.config.mjs                  # Next.js configuration
-├── tailwind.config.ts               # Tailwind CSS configuration
 └── postcss.config.mjs               # PostCSS configuration
 ```
 
@@ -140,6 +148,7 @@ CODEKNIGHT_ARC/
 ### Prerequisites
 
 Ensure you have the following installed:
+
 - **Node.js**: v18 or higher
 - **pnpm**: v9 or higher (or npm/yarn as alternatives)
 - **Git**: For version control
@@ -148,25 +157,29 @@ Ensure you have the following installed:
 ### Installation
 
 1. **Clone the Repository**
+
    ```bash
    git clone https://github.com/ansh-10-p/CODEKNIGHT_ARC.git
    cd CODEKNIGHT_ARC
    ```
 
 2. **Install Dependencies**
+
    ```bash
-   pnpm install
+   npm install
    ```
 
 3. **Set Up Environment Variables**
+
    ```bash
    cp .env.example .env.local
    ```
+
    Configure the required environment variables (see [Configuration](#-configuration) section).
 
 4. **Start the Development Server**
    ```bash
-   pnpm dev
+   npm run dev
    ```
    The application will be available at `http://localhost:3000`
 
@@ -226,7 +239,9 @@ pnpm lint             # Run ESLint on the codebase
 ## 🎓 Core Modules
 
 ### Student Portal
+
 The comprehensive platform for students to manage their academic and campus life:
+
 - **Dashboard**: Quick overview of schedules, upcoming events, and important notifications
 - **AI Mentor**: Interactive voice and chat-based AI assistant for academic support powered by OpenAI
 - **Classroom**: Access course materials, assignments, and collaborate with peers
@@ -240,7 +255,9 @@ The comprehensive platform for students to manage their academic and campus life
 - **Campus Map**: Interactive campus navigation
 
 ### Teacher Portal
+
 Tools designed to enhance teaching efficiency and student engagement:
+
 - **Dashboard**: Overview of classes, student progress, and administrative tasks
 - **Classroom Management**: Upload course materials, manage assignments, and track student performance
 - **Attendance**: Mark and manage student attendance
@@ -248,7 +265,9 @@ Tools designed to enhance teaching efficiency and student engagement:
 - **Resource Distribution**: Share educational materials with students
 
 ### Canteen Management System
+
 Streamline food service operations:
+
 - **Menu Management**: Digital menu with item descriptions, pricing, and images
 - **Order Processing**: Real-time order tracking and preparation status
 - **Demand Forecasting**: AI-driven demand prediction for inventory planning
@@ -282,12 +301,14 @@ Streamline food service operations:
 ## 🤖 AI & Advanced Features
 
 ### AI Mentor
+
 - Real-time voice conversation for academic guidance
 - Context-aware responses using OpenAI GPT models
 - Chat history and personalized learning paths
 - 24/7 availability for student support
 
 ### Smart Analytics
+
 - Data visualization with Recharts
 - Real-time dashboard metrics
 - Predictive analytics for canteen demand
@@ -298,6 +319,7 @@ Streamline food service operations:
 ## 📊 Database Schema
 
 The application uses MongoDB with Mongoose for data persistence:
+
 - **User Models**: Students, Teachers, Admins with role-based properties
 - **Course Models**: Courses, Classrooms, Materials
 - **Order Models**: Food orders, order history, transaction records
@@ -310,12 +332,14 @@ The application uses MongoDB with Mongoose for data persistence:
 ## 🌐 Deployment
 
 ### Recommended Platforms
+
 - **Vercel**: Optimal for Next.js applications
 - **AWS**: For enterprise-scale deployments
 - **Digital Ocean**: Cost-effective alternative
 - **Railway**: Simple deployment with automatic CI/CD
 
 ### Deployment Checklist
+
 - [ ] Set up production environment variables
 - [ ] Configure MongoDB Atlas for production database
 - [ ] Set up Razorpay production keys

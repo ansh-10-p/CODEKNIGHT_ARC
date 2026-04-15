@@ -121,13 +121,17 @@ export default function LoginPage() {
             <div className="space-y-2">
               <Label htmlFor="role" className="text-white">Role</Label>
               <Select value={role} onValueChange={(value) => setRole(value as any)}>
-                <SelectTrigger className="bg-zinc-800/50 border-zinc-700 text-white focus:border-[#e78a53] focus:ring-[#e78a53]/20">
+                <SelectTrigger
+                  id="role"
+                  className="w-full bg-zinc-800/50 border-zinc-700 text-white text-left focus:border-[#e78a53] focus:ring-[#e78a53]/20"
+                  aria-label="Role"
+                >
                   <SelectValue placeholder="Select your role" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="student">Student</SelectItem>
-                  <SelectItem value="teacher">Teacher</SelectItem>
-                  <SelectItem value="canteen">Canteen Manager</SelectItem>
+                <SelectContent className="bg-zinc-800 border-zinc-700 text-white">
+                  <SelectItem value="student" className="text-white">Student</SelectItem>
+                  <SelectItem value="teacher" className="text-white">Teacher</SelectItem>
+                  <SelectItem value="canteen" className="text-white">Canteen Manager</SelectItem>
                 </SelectContent>
               </Select>
             </div>

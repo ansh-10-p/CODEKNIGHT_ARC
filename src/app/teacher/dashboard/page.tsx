@@ -28,7 +28,6 @@ import {
   Car,
 } from "lucide-react";
 import { UserMenu } from "@/components/user-menu";
-import { ChartContainer } from "@/components/ui/chart";
 import {
   LineChart,
   Line,
@@ -294,22 +293,22 @@ export default function TeacherDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex">
+    <div className="min-h-screen bg-background text-foreground flex">
       <TeacherSidebar />
-      <main className="flex-1 overflow-auto">
-        <header className="bg-zinc-900/50 backdrop-blur-sm border-b border-zinc-800">
-          <div className="px-8 py-6 flex items-center justify-between">
+      <main className="flex-1 overflow-auto bg-transparent">
+        <header className="bg-[rgba(255,255,255,0.06)] backdrop-blur-xl border border-white/10 shadow-[0_25px_80px_-40px_rgba(0,0,0,0.7)]">
+          <div className="px-8 py-6 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white">
                 Teacher Dashboard
               </h1>
-              <p className="text-zinc-400 mt-2">
+              <p className="text-slate-300 mt-2">
                 Welcome back, {currentUser?.firstName || "Teacher"}
               </p>
             </div>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="icon">
-                <Bell className="h-5 w-5 text-zinc-400" />
+                <Bell className="h-5 w-5 text-slate-300" />
               </Button>
               <UserMenu />
             </div>
@@ -319,23 +318,23 @@ export default function TeacherDashboardPage() {
         <div className="p-8">
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <Card className="bg-zinc-900/50 border-zinc-800">
+            <Card className="border-white/10">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-500/10 rounded-lg">
+                  <div className="p-3 bg-blue-500/10 rounded-2xl">
                     <BookOpen className="h-6 w-6 text-blue-400" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-white">
                       {loading ? "--" : getActiveClassrooms()}
                     </p>
-                    <p className="text-zinc-400 text-sm">Active Classes</p>
+                    <p className="text-slate-300 text-sm">Active Classes</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-zinc-900/50 border-zinc-800">
+            <Card className="border-white/10">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-green-500/10 rounded-lg">
@@ -345,13 +344,13 @@ export default function TeacherDashboardPage() {
                     <p className="text-2xl font-bold text-white">
                       {loading ? "--" : getTotalStudents()}
                     </p>
-                    <p className="text-zinc-400 text-sm">Total Students</p>
+                    <p className="text-slate-300 text-sm">Total Students</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-zinc-900/50 border-zinc-800">
+            <Card className="border-white/10">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-[#e78a53]/10 rounded-lg">
@@ -361,13 +360,13 @@ export default function TeacherDashboardPage() {
                     <p className="text-2xl font-bold text-white">
                       {loading ? "--" : `${attendanceStats.attendanceRate}%`}
                     </p>
-                    <p className="text-zinc-400 text-sm">Attendance Rate</p>
+                    <p className="text-slate-300 text-sm">Attendance Rate</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-zinc-900/50 border-zinc-800">
+            <Card className="border-white/10">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-purple-500/10 rounded-lg">
@@ -377,7 +376,7 @@ export default function TeacherDashboardPage() {
                     <p className="text-2xl font-bold text-white">
                       {loading ? "--" : displayTodayClasses.length}
                     </p>
-                    <p className="text-zinc-400 text-sm">Classes Today</p>
+                    <p className="text-slate-300 text-sm">Classes Today</p>
                   </div>
                 </div>
               </CardContent>
@@ -385,7 +384,7 @@ export default function TeacherDashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
-            <Card className="xl:col-span-2 bg-zinc-900/50 border-zinc-800">
+            <Card className="xl:col-span-2 border-white/10">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-[#e78a53]" />
@@ -393,15 +392,12 @@ export default function TeacherDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="h-[320px]">
-                  <ChartContainer
-                    config={{
-                      sectionA: { color: "#60A5FA", label: "Class A" },
-                      sectionB: { color: "#A855F7", label: "Class B" },
-                      sectionC: { color: "#22C55E", label: "Class C" },
-                    }}
-                  >
-                    <LineChart data={attendanceTrendData}>
+                <div className="h-[320px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={attendanceTrendData}
+                      margin={{ top: 16, right: 24, left: 0, bottom: 0 }}
+                    >
                       <CartesianGrid
                         stroke="rgba(148, 163, 184, 0.15)"
                         strokeDasharray="4 4"
@@ -424,8 +420,11 @@ export default function TeacherDashboardPage() {
                         }}
                       />
                       <RechartsLegend
+                        layout="horizontal"
+                        verticalAlign="bottom"
+                        align="center"
                         formatter={(value) => (
-                          <span className="text-zinc-300">{value}</span>
+                          <span className="text-slate-300">{value}</span>
                         )}
                       />
                       <Line
@@ -450,12 +449,12 @@ export default function TeacherDashboardPage() {
                         dot={false}
                       />
                     </LineChart>
-                  </ChartContainer>
+                  </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-zinc-900/50 border-zinc-800">
+            <Card className="border-white/10">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Award className="h-5 w-5 text-[#e78a53]" />
@@ -463,26 +462,16 @@ export default function TeacherDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="h-[320px]">
-                  <ChartContainer
-                    config={{
-                      Excellent: { color: "#34D399", label: "Excellent" },
-                      Good: { color: "#60A5FA", label: "Good" },
-                      Average: { color: "#FBBF24", label: "Average" },
-                      "Needs Improvement": {
-                        color: "#F87171",
-                        label: "Needs Improvement",
-                      },
-                    }}
-                  >
+                <div className="h-[320px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={performanceData}
                         dataKey="value"
                         nameKey="name"
                         innerRadius={70}
-                        outerRadius={110}
-                        paddingAngle={3}
+                        outerRadius={90}
+                        paddingAngle={4}
                         stroke="transparent"
                       >
                         {performanceData.map((entry) => (
@@ -496,13 +485,13 @@ export default function TeacherDashboardPage() {
                         }}
                       />
                       <RechartsLegend
-                        layout="vertical"
-                        verticalAlign="middle"
-                        align="right"
-                        wrapperStyle={{ color: "#94A3B8" }}
+                        layout="horizontal"
+                        verticalAlign="bottom"
+                        align="center"
+                        wrapperStyle={{ color: "#94A3B8", marginTop: 12 }}
                       />
                     </PieChart>
-                  </ChartContainer>
+                  </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
@@ -511,7 +500,7 @@ export default function TeacherDashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Today's Schedule */}
             <div className="lg:col-span-2">
-              <Card className="bg-zinc-900/50 border-zinc-800 mb-8">
+              <Card className="border-white/10 mb-8">
                 <CardContent className="p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <div className="p-3 bg-[#e78a53]/10 rounded-lg">
@@ -521,7 +510,7 @@ export default function TeacherDashboardPage() {
                       <h3 className="text-white font-semibold">
                         Parking Allocation
                       </h3>
-                      <p className="text-zinc-400 text-sm">
+                      <p className="text-slate-300 text-sm">
                         Request or review your teacher parking slot.
                       </p>
                     </div>
@@ -533,7 +522,7 @@ export default function TeacherDashboardPage() {
                   </Link>
                 </CardContent>
               </Card>
-              <Card className="bg-zinc-900/50 border-zinc-800">
+              <Card className="border-white/10">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <Clock className="h-5 w-5 text-[#e78a53]" />
@@ -547,8 +536,8 @@ export default function TeacherDashboardPage() {
                     </div>
                   ) : displayTodayClasses.length === 0 ? (
                     <div className="text-center py-8">
-                      <Calendar className="h-12 w-12 text-zinc-600 mx-auto mb-4" />
-                      <p className="text-zinc-400">
+                      <Calendar className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                      <p className="text-slate-300">
                         No classes scheduled for today
                       </p>
                     </div>
@@ -557,14 +546,14 @@ export default function TeacherDashboardPage() {
                       {displayTodayClasses.map((cls, index) => (
                         <div
                           key={index}
-                          className="p-4 bg-zinc-800/30 rounded-lg"
+                          className="p-4 bg-[rgba(255,255,255,0.05)] rounded-2xl border border-white/10"
                         >
                           <div className="flex items-center justify-between mb-2">
                             <div>
                               <h4 className="text-white font-semibold">
                                 {cls.subject}
                               </h4>
-                              <p className="text-zinc-400 text-sm">
+                              <p className="text-slate-300 text-sm">
                                 {cls.classroomId}
                               </p>
                             </div>
@@ -572,8 +561,8 @@ export default function TeacherDashboardPage() {
                               {cls.time}
                             </Badge>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-zinc-400">
-                            <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-4 text-sm text-slate-300">
+                            <div className="flex items-center gap-1 text-slate-400">
                               <MapPin className="h-3 w-3" />
                               {cls.room}
                             </div>
@@ -590,7 +579,7 @@ export default function TeacherDashboardPage() {
               </Card>
 
               {/* My Classrooms */}
-              <Card className="bg-zinc-900/50 border-zinc-800 mt-8">
+              <Card className="border-white/10 mt-8">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-white flex items-center gap-2">
@@ -601,7 +590,7 @@ export default function TeacherDashboardPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-zinc-700 text-zinc-400 hover:text-white"
+                        className="border-white/15 text-slate-300 hover:text-white"
                       >
                         View All
                         <ChevronRight className="h-4 w-4 ml-1" />
@@ -616,12 +605,14 @@ export default function TeacherDashboardPage() {
                     </div>
                   ) : displayClassrooms.length === 0 ? (
                     <div className="text-center py-8">
-                      <BookOpen className="h-12 w-12 text-zinc-600 mx-auto mb-4" />
-                      <p className="text-zinc-400">No classrooms created yet</p>
+                      <BookOpen className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                      <p className="text-slate-300">
+                        No classrooms created yet
+                      </p>
                       <Link href="/teacher/classroom">
                         <Button
                           variant="outline"
-                          className="mt-4 border-zinc-700 text-zinc-400 hover:text-white"
+                          className="mt-4 border-white/15 text-slate-300 hover:text-white"
                         >
                           Create Classroom
                         </Button>
@@ -632,7 +623,7 @@ export default function TeacherDashboardPage() {
                       {displayClassrooms.slice(0, 4).map((classroom) => (
                         <div
                           key={classroom._id}
-                          className="p-4 bg-zinc-800/30 rounded-lg"
+                          className="p-4 bg-[rgba(255,255,255,0.05)] rounded-2xl border border-white/10"
                         >
                           <div className="flex items-center justify-between mb-2">
                             <h4 className="text-white font-semibold text-sm">
@@ -642,17 +633,17 @@ export default function TeacherDashboardPage() {
                               className={`text-xs ${
                                 classroom.status === "active"
                                   ? "bg-green-500/10 text-green-400 border-green-500/30"
-                                  : "bg-zinc-500/10 text-zinc-400 border-zinc-500/30"
+                                  : "bg-white/10 text-slate-300 border-white/15"
                               }`}
                             >
                               {classroom.status}
                             </Badge>
                           </div>
-                          <p className="text-zinc-400 text-xs mb-2">
+                          <p className="text-slate-300 text-xs mb-2">
                             {classroom.subject}
                           </p>
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-zinc-500">
+                            <span className="text-slate-400">
                               ID: {classroom.classroomId}
                             </span>
                             <span className="text-[#e78a53]">
@@ -671,7 +662,7 @@ export default function TeacherDashboardPage() {
             {/* Right Column */}
             <div className="space-y-8">
               {/* Quick Actions */}
-              <Card className="bg-zinc-900/50 border-zinc-800">
+              <Card className="border-white/10">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">
                     Quick Actions
@@ -679,25 +670,25 @@ export default function TeacherDashboardPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Link href="/teacher/classroom/attendance" className="block">
-                    <Button className="w-full bg-zinc-800 hover:bg-zinc-700 text-white justify-start">
+                    <Button className="w-full bg-white/5 hover:bg-white/10 text-white justify-start">
                       <UserCheck className="h-4 w-4 mr-2" />
                       Take Attendance
                     </Button>
                   </Link>
                   <Link href="/teacher/timetable" className="block">
-                    <Button className="w-full bg-zinc-800 hover:bg-zinc-700 text-white justify-start">
+                    <Button className="w-full bg-white/5 hover:bg-white/10 text-white justify-start">
                       <Calendar className="h-4 w-4 mr-2" />
                       View Timetable
                     </Button>
                   </Link>
                   <Link href="/teacher/classroom" className="block">
-                    <Button className="w-full bg-zinc-800 hover:bg-zinc-700 text-white justify-start">
+                    <Button className="w-full bg-white/5 hover:bg-white/10 text-white justify-start">
                       <BookOpen className="h-4 w-4 mr-2" />
                       Manage Classes
                     </Button>
                   </Link>
                   <Link href="/teacher/food" className="block">
-                    <Button className="w-full bg-zinc-800 hover:bg-zinc-700 text-white justify-start">
+                    <Button className="w-full bg-white/5 hover:bg-white/10 text-white justify-start">
                       <UtensilsCrossed className="h-4 w-4 mr-2" />
                       Order Food
                     </Button>
@@ -706,7 +697,7 @@ export default function TeacherDashboardPage() {
               </Card>
 
               {/* Recent Food Orders */}
-              <Card className="bg-zinc-900/50 border-zinc-800">
+              <Card className="border-white/10">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2 text-lg">
                     <ShoppingBag className="h-5 w-5 text-[#e78a53]" />
@@ -720,13 +711,13 @@ export default function TeacherDashboardPage() {
                     </div>
                   ) : displayFoodOrders.length === 0 ? (
                     <div className="text-center py-4">
-                      <ShoppingBag className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
-                      <p className="text-zinc-400 text-sm">No recent orders</p>
+                      <ShoppingBag className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                      <p className="text-slate-300 text-sm">No recent orders</p>
                       <Link href="/teacher/food">
                         <Button
                           variant="outline"
                           size="sm"
-                          className="mt-3 border-zinc-700 text-zinc-400 hover:text-white"
+                          className="mt-3 border-white/15 text-slate-300 hover:text-white"
                         >
                           Order Now
                         </Button>
@@ -737,7 +728,7 @@ export default function TeacherDashboardPage() {
                       {displayFoodOrders.slice(0, 3).map((order) => (
                         <div
                           key={order._id}
-                          className="p-3 bg-zinc-800/30 rounded-lg"
+                          className="p-3 bg-[rgba(255,255,255,0.05)] border border-white/10 rounded-2xl"
                         >
                           <div className="flex items-center justify-between mb-1">
                             <p className="text-white text-sm font-medium">
@@ -749,20 +740,20 @@ export default function TeacherDashboardPage() {
                                   ? "bg-green-500/10 text-green-400 border-green-500/30"
                                   : order.status === "preparing"
                                     ? "bg-yellow-500/10 text-yellow-400 border-yellow-500/30"
-                                    : "bg-zinc-500/10 text-zinc-400 border-zinc-500/30"
+                                    : "bg-white/10 text-slate-300 border-white/15"
                               }`}
                             >
                               {order.status}
                             </Badge>
                           </div>
-                          <p className="text-zinc-500 text-xs">
+                          <p className="text-slate-400 text-xs">
                             {order.items.length} items
                           </p>
                           <div className="flex items-center justify-between mt-2">
                             <span className="text-[#e78a53] text-sm font-semibold">
                               ₹{order.totalAmount}
                             </span>
-                            <span className="text-zinc-500 text-xs">
+                            <span className="text-slate-400 text-xs">
                               {formatDate(order.createdAt)}
                             </span>
                           </div>
@@ -773,7 +764,7 @@ export default function TeacherDashboardPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full border-zinc-700 text-zinc-400 hover:text-white"
+                            className="w-full border-white/15 text-slate-300 hover:text-white"
                           >
                             View All Orders
                           </Button>
@@ -785,7 +776,7 @@ export default function TeacherDashboardPage() {
               </Card>
 
               {/* Upcoming Deadlines */}
-              <Card className="bg-zinc-900/50 border-zinc-800">
+              <Card className="border-white/10">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2 text-lg">
                     <AlertCircle className="h-5 w-5 text-yellow-400" />
@@ -798,13 +789,15 @@ export default function TeacherDashboardPage() {
                       <p className="text-yellow-400 text-sm font-medium">
                         Submit attendance report
                       </p>
-                      <p className="text-zinc-400 text-xs mt-1">Due tomorrow</p>
+                      <p className="text-slate-300 text-xs mt-1">
+                        Due tomorrow
+                      </p>
                     </div>
                     <div className="p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
                       <p className="text-blue-400 text-sm font-medium">
                         Parent-teacher meeting
                       </p>
-                      <p className="text-zinc-400 text-xs mt-1">
+                      <p className="text-slate-300 text-xs mt-1">
                         Friday, 3:00 PM
                       </p>
                     </div>
@@ -812,7 +805,7 @@ export default function TeacherDashboardPage() {
                       <p className="text-green-400 text-sm font-medium">
                         Grade assignments
                       </p>
-                      <p className="text-zinc-400 text-xs mt-1">
+                      <p className="text-slate-300 text-xs mt-1">
                         3 days remaining
                       </p>
                     </div>

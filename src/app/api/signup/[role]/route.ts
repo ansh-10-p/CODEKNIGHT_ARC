@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/lib/db";
+import { connectToDatabase } from "@/services/database";
 import { StudentModel, TeacherModel, CanteenModel } from "@/lib/models";
 
 const roleModels = {

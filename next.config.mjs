@@ -1,3 +1,9 @@
+import dotenv from "dotenv";
+import path from "path";
+
+const rootEnv = path.resolve(process.cwd(), "../.env");
+dotenv.config({ path: rootEnv, override: true });
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -9,6 +15,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
