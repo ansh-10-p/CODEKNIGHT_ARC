@@ -72,5 +72,6 @@ def predict():
 
 if __name__ == '__main__':
     # Running on 0.0.0.0 to make it accessible if needed
-    # Standard Flask dev port is 5000
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    # Default port is 5001, but can be overridden with PORT env var
+    port = int(os.getenv('PORT', '5001'))
+    app.run(host='0.0.0.0', port=port, debug=True)
