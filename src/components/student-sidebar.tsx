@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Calendar,
   MapPin,
@@ -20,17 +20,16 @@ import {
   FileText,
   CheckCircle,
   Megaphone,
-  BarChart3,
-} from "lucide-react"
+} from "lucide-react";
 
 interface SidebarProps {
-  className?: string
+  className?: string;
 }
 
 export function StudentSidebar({ className = "" }: SidebarProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path
+  const isActive = (path: string) => pathname === path;
 
   const navItems = [
     { href: "/student/dashboard", icon: Users, label: "Dashboard" },
@@ -42,18 +41,22 @@ export function StudentSidebar({ className = "" }: SidebarProps) {
     { href: "/student/resources", icon: BookOpen, label: "Resources" },
     { href: "/student/ai-mentor", icon: MapPin, label: "Campus Navigation" },
     { href: "/student/attendance", icon: UserCheck, label: "Attendance" },
-    { href: "/performance", icon: BarChart3, label: "Predict Student Performance" },
     { href: "/student/internships", icon: Briefcase, label: "Internships" },
     { href: "/student/parking", icon: Car, label: "Parking" },
     { href: "/student/fees", icon: IndianRupee, label: "Pay Fees" },
     { href: "/student/examination", icon: Award, label: "Exam Cell" },
     { href: "/student/announcements", icon: Megaphone, label: "Announcements" },
-  ]
+  ];
 
   return (
-    <aside className={`w-64 bg-zinc-900/50 backdrop-blur-sm border-r border-zinc-800 flex flex-col ${className}`}>
+    <aside
+      className={`w-64 bg-zinc-900/50 backdrop-blur-sm border-r border-zinc-800 flex flex-col ${className}`}
+    >
       <div className="p-6">
-        <Link href="/student/dashboard" className="text-[#e78a53] font-bold text-xl">
+        <Link
+          href="/student/dashboard"
+          className="text-[#e78a53] font-bold text-xl"
+        >
           Arc Campus
         </Link>
         <p className="text-zinc-400 text-sm mt-1">Student Portal</p>
@@ -61,20 +64,23 @@ export function StudentSidebar({ className = "" }: SidebarProps) {
 
       <nav className="px-4 space-y-2">
         {navItems.map((item) => {
-          const Icon = item.icon
-          const active = isActive(item.href)
+          const Icon = item.icon;
+          const active = isActive(item.href);
 
           return (
             <Link key={item.href} href={item.href}>
-              <div className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${active
-                ? 'text-white bg-[#e78a53]/10 border-l-2 border-[#e78a53]'
-                : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
-                }`}>
-                <Icon className={`h-5 w-5 ${active ? 'text-[#e78a53]' : ''}`} />
+              <div
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  active
+                    ? "text-white bg-[#e78a53]/10 border-l-2 border-[#e78a53]"
+                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                }`}
+              >
+                <Icon className={`h-5 w-5 ${active ? "text-[#e78a53]" : ""}`} />
                 <span>{item.label}</span>
               </div>
             </Link>
-          )
+          );
         })}
       </nav>
 
@@ -89,5 +95,5 @@ export function StudentSidebar({ className = "" }: SidebarProps) {
         </div>
       </div>
     </aside>
-  )
+  );
 }
